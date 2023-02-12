@@ -1,86 +1,41 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- * @flow strict-local
- */
+import React from 'react';
+import { Button, StyleSheet, View } from 'react-native';
+import TodoList from './TodoList';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { NavigationContainer } from '@react-navigation/native';
+import Home from './Home';
 
-import React, {useState, useEffect} from 'react';
-import {
-  Image,
-  StyleSheet,
-  SafeAreaView,
-  Text,
-  View,
-  FlatList,
-  ActivityIndicator,
-  Dimensions,
-  StatusBar,
-  Animated,
-  Button,
-} from 'react-native';
+const Stack = createNativeStackNavigator();
 
 const App = () => {
-  const fadeIn = new Animated.Value(0);
-  const tranY = new Animated.Value(0);
-
-  const setFadeOut = () => {
-    Animated.timing(fadeIn, {
-      toValue: 1,
-      duration: 500,
-      useNativeDriver: true,
-    }).start(setFadeIn);
-  };
-
-  const setFadeIn = () => {
-    Animated.timing(fadeIn, {
-      toValue: 0,
-      duration: 500,
-      useNativeDriver: true,
-    }).start(setFadeOut);
-  };
-
-  const setMoveLine = () => {
-    tranY.setValue(0);
-    Animated.timing(tranY, {
-      toValue: 200,
-      duration: 500,
-      useNativeDriver: true,
-    }).start(setMoveLine);
-  };
-
-  // const setReverseLine = () => {
-  //   Animated.timing(tranY, {
-  //     toValue: 0,
-  //     duration: 500,
-  //     useNativeDriver: true,
-  //   }).start(setMoveLine);
-  // };
-
   return (
-    <View>
-      <Animated.View style={[styles.view, {opacity: fadeIn}]}>
-        <Text>FadeINininin</Text>
-      </Animated.View>
-      <Button title="FadeIN" onPress={setFadeOut} />
-
-      <View style={[styles.view]}>
-        <Animated.View
-          style={[
-            styles.line,
-            {
-              transform: [
-                {
-                  translateY: tranY,
-                },
-              ],
-            },
-          ]}
-        />
-      </View>
-      <Button title="FadeIN" onPress={setMoveLine} />
-    </View>
+    <NavigationContainer>
+      <Stack.Navigator
+        screenOptions={{
+          headerTintColor: 'white',
+          headerStyle: {
+            backgroundColor: 'orange',
+          },
+          headerRight: () => (
+            <Button title="header right" onPress={() => alert('this is header right')}></Button>
+          ),
+        }}
+        initialRouteName="Home"
+      >
+        <Stack.Screen
+          options={{
+            title: 'Home',
+          }}
+          name="Home"
+          component={Home}
+        ></Stack.Screen>
+        <Stack.Screen
+          options={{ title: 'TodoList' }}
+          name="TodoList"
+          component={TodoList}
+        ></Stack.Screen>
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 };
 
